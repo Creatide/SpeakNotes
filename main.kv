@@ -1,0 +1,474 @@
+#:import Window kivy.core.window.Window
+
+# ============================================================================ #
+# SHARED VARIABLES                                                             #
+# ============================================================================ #
+
+# Colors --------------------------------------------------------------------- #
+#:set color_white (1.0, 1.0, 1.0, 1)
+#:set color_black (0.0, 0.0, 0.0, 1)
+#:set color_grey (0.6, 0.6, 0.6, 1)
+#:set color_grey_lightest (0.8, 0.8, 0.8, 1)
+#:set color_grey_light (0.4, 0.4, 0.4, 1)
+#:set color_grey_dark (0.1, 0.1, 0.1, 1)
+#:set color_grey_darkest (0.08, 0.08, 0.08, 1)
+#:set color_accent_red (1, 0.3, 0.3, 1)
+#:set color_accent_blue (0, 0.6, 1, 1)
+#:set color_accent_green (0.4, 0.8, 0.4, 1)
+#:set color_transparent (0, 0, 0, 0)
+
+# MenuBar -------------------------------------------------------------------- #
+#:set menubar_button_count 3
+#:set menubar_height sp(80)
+#:set menubar_button_icon_size 0.6 # Percentage of menubar height
+#:set menubar_bg_color color_grey_dark
+#:set menubar_icon_color color_white
+
+# BottomBar ------------------------------------------------------------------ #
+#:set bottombar_height sp(100)
+#:set bottombar_bg_color color_grey_dark
+#:set bottombar_text_color color_white
+#:set bottombar_font_size sp(36)
+
+# ============================================================================ #
+# SCREENS                                                                      #
+# ============================================================================ #
+
+# Notes ---------------------------------------------------------------------- #
+# ---------------------------------------------------------------------------- #
+<ScreenNotes>:
+    name: "screen_notes"
+    BoxLayout:
+        orientation: 'vertical'
+        size_hint_y: 1
+        spacing: dp(10)
+        canvas.before:
+            Color:
+                rgba: color_grey_darkest
+            Rectangle:
+                size: self.size
+                pos: self.pos
+        MenuBar:
+        ScrollableList:
+            id: scrollable_list
+        BottomBar:
+            BottomBarButton:
+                id: notes_button_newnote
+                on_release: root.on_release_button_newnote()
+                text: 'Record Note'
+                background_color: color_accent_blue
+                width: self.parent.width
+
+# Record --------------------------------------------------------------------- #
+# ---------------------------------------------------------------------------- #
+<ScreenRecord>:
+    name: "screen_record"
+    BoxLayout:
+        orientation: 'vertical'
+        size_hint_y: 1
+        spacing: dp(10)
+        canvas.before:
+            Color:
+                rgba: color_grey_darkest
+            Rectangle:
+                size: self.size
+                pos: self.pos
+        MenuBar:
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint: 1, 1
+            padding: (dp(40), dp(20))
+            Label:
+                id: record_time
+                halign: 'center'
+                valign: 'middle'
+                padding: (dp(0), dp(40))
+                font_size: sp(128)
+                bold: False
+                color: color_accent_blue
+                text_size: self.size
+                size_hint_y: None
+                height: sp(200)
+            Label:
+                id: record_title
+                halign: 'left'
+                valign: 'top'
+                font_size: sp(36)
+                bold: True
+                color: color_white
+                text_size: self.size
+                size_hint_y: None
+                height: self.texture_size[1]
+            Label:
+                id: record_date
+                halign: 'left'
+                valign: 'top'
+                padding: (dp(0), dp(5))
+                font_size: sp(24)
+                color: color_grey_light
+                text_size: self.size
+                size_hint_y: None
+                height: self.texture_size[1]
+            BoxLayout:
+                size_hint: 1, 1
+                TextInput:
+                    id: record_textinput
+                    readonly: True
+                    halign: 'left'
+                    valign: 'top'
+                    padding: (dp(0), dp(10))
+                    font_size: sp(30)
+                    color: color_grey
+                    text_size: self.size
+                    size_hint_y: 1
+                    height: max(self.minimum_height, self.parent.height)
+                    background_normal: ''
+                    background_active: ''
+                    background_color: color_grey_darkest
+                    foreground_color: color_grey_lightest
+                    border: (0, 0, 0, 0)
+        BottomBar:
+            BoxLayout:
+                id: record_bottombar_buttons
+                orientation: 'horizontal'
+                size_hint_x: 1
+                BottomBarButton:
+                    id: record_button_start
+                    on_release: root.on_release_button_start()
+                    text: 'Start Recording'
+                    background_color: color_accent_blue
+                BottomBarButton:
+                    id: record_button_stop
+                    on_release: root.on_release_button_stop()
+                    text: 'Stop'
+                    background_color: color_accent_red
+                BottomBarButton:
+                    id: record_button_pause
+                    on_release: root.on_release_button_pause()
+                    text: 'Pause'
+                    background_color: color_accent_blue
+                BottomBarButton:
+                    id: record_button_resume
+                    on_release: root.on_release_button_resume()
+                    text: 'Resume'
+                    background_color: color_accent_blue
+                BottomBarButton:
+                    id: record_button_discard
+                    on_release: root.on_release_button_discard()
+                    text: 'Discard'
+                    background_color: color_accent_red
+                BottomBarButton:
+                    id: record_button_save
+                    on_release: root.on_release_button_save()
+                    text: 'Save'
+                    background_color: color_accent_green
+                    
+
+# Preview -------------------------------------------------------------------- #
+# ---------------------------------------------------------------------------- #
+<ScreenPreview>:
+    name: "screen_preview"
+    BoxLayout:
+        orientation: 'vertical'
+        size_hint_y: 1
+        spacing: dp(10)
+        canvas.before:
+            Color:
+                rgba: color_grey_darkest
+            Rectangle:
+                size: self.size
+                pos: self.pos
+        MenuBar:
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint: 1, 1
+            padding: (dp(40), dp(20))
+            TextInput:
+                id: preview_title
+                halign: 'left'
+                valign: 'top'
+                font_size: sp(36)
+                bold: True
+                color: color_white
+                disabled_foreground_color: color_grey
+                text_size: self.size
+                size_hint_y: None
+                height: self.minimum_height
+                background_normal: ''
+                background_active: ''
+                background_disabled_normal: ''
+                background_color: color_grey_darkest
+                foreground_color: color_grey_lightest
+                border: (0, 0, 0, 0)
+                cursor_color: color_accent_red
+                cursor_width: '3sp'
+                cursor_blink: False
+            Label:
+                id: preview_date
+                halign: 'left'
+                valign: 'top'
+                padding: (dp(0), dp(5))
+                font_size: sp(24)
+                color: color_grey_light
+                text_size: self.size
+                size_hint_y: None
+                height: self.texture_size[1]
+            BoxLayout:
+                size_hint: 1, 1
+                TextInput:
+                    id: preview_text
+                    on_focus: root.on_textinput_focus(self, self.focus)
+                    readonly: True
+                    halign: 'left'
+                    valign: 'top'
+                    padding: (dp(0), dp(10))
+                    font_size: sp(30)
+                    color: color_white
+                    disabled_foreground_color: color_grey
+                    text_size: self.size
+                    size_hint_y: 1
+                    height: max(self.minimum_height, self.parent.height)
+                    background_normal: ''
+                    background_active: ''
+                    background_disabled_normal: ''
+                    background_color: color_grey_darkest
+                    foreground_color: color_grey_lightest
+                    border: (0, 0, 0, 0)
+                    cursor_color: color_accent_red
+                    cursor_width: '3sp'
+                    cursor_blink: False
+        BottomBar:
+            BoxLayout:
+                id: preview_bottombar_buttons
+                orientation: 'horizontal'
+                size_hint_x: 1
+                BottomBarButton:
+                    id: preview_button_delete
+                    on_release: root.on_release_button_delete()
+                    text: 'Delete'
+                    background_color: color_accent_red
+                BottomBarButton:
+                    id: preview_button_edit
+                    on_release: root.on_release_button_edit()
+                    text: 'Edit'
+                    background_color: color_accent_blue
+                BottomBarButton:
+                    id: preview_button_save
+                    on_release: root.on_release_button_save()
+                    text: 'Save'
+                    background_color: color_accent_green
+
+# Settings ------------------------------------------------------------------- #
+# ---------------------------------------------------------------------------- #
+<ScreenSettings>:
+    name: "screen_settings"
+    BoxLayout:
+        orientation: 'vertical'
+        size_hint_y: 1
+        spacing: dp(10)
+        canvas.before:
+            Color:
+                rgba: color_grey_darkest
+            Rectangle:
+                size: self.size
+                pos: self.pos
+        MenuBar:
+        BoxLayout:
+            id: settings_boxlayout
+            orientation: 'vertical'
+            size_hint: 1, 1
+            padding: (dp(10), dp(0))
+        BottomBar:
+
+# ============================================================================ #
+# SHARED ELEMENTS                                                              #
+# ============================================================================ #
+
+# Scrollable List ------------------------------------------------------------ #
+<ScrollableList>:
+    ScrollView:
+        BoxLayout:
+            id: list_layout
+            orientation: "vertical"
+            size_hint_x: 1
+            size_hint_y: None
+            height: self.minimum_height
+            spacing: dp(10)
+
+<ScrollableListItem>:
+    orientation: "vertical"
+    size_hint_x: 1
+    size_hint_y: None
+    height: self.ids.scrollable_item_boxlayout.minimum_height
+    ClickableItem:
+        id: scrollable_item_boxlayout
+        data: root.data
+        on_press: self.on_press_item() # Can be called in python side on_press also
+        orientation: "vertical"
+        size_hint_y: None
+        height: self.minimum_height
+        padding: (dp(40), dp(20))
+
+        canvas.before:
+            Color:
+                rgba: color_grey_dark
+            Rectangle:
+                size: self.size
+                pos: self.pos
+        Label:
+            text: root.data['title']
+            shorten: True
+            shorten_from: 'right'
+            halign: 'left'
+            valign: 'top'
+            font_size: sp(36)
+            bold: True
+            color: color_white
+            text_size: self.size
+            size_hint_y: None
+            height: self.texture_size[1]
+        Label:
+            text: root.data['date']
+            halign: 'left'
+            valign: 'top'
+            padding: (dp(0), dp(5))
+            font_size: sp(24)
+            color: color_grey_light
+            text_size: self.size
+            size_hint_y: None
+            height: self.texture_size[1]
+        Label:
+            text: root.data['summary']
+            shorten: True
+            shorten_from: 'right'
+            # max_lines: 10
+            halign: 'left'
+            valign: 'top'
+            padding: (dp(0), dp(10))
+            font_size: sp(30)
+            color: color_grey
+            text_size: self.size
+            size_hint_y: None
+            height: self.texture_size[1]
+
+# MenuBar -------------------------------------------------------------------- #
+<MenuBarButton@Button>:
+    color: menubar_icon_color
+    background_normal: ''
+    background_color: menubar_bg_color
+
+<MenuBar@BoxLayout>:
+    size_hint: 1, None
+    height: menubar_height
+    padding: '0sp'
+    spacing: '0sp'
+    orientation: 'horizontal'
+    MenuBarButton:
+        markup: True
+        text: '[font=IconFont]notes[/font]'
+        size_hint_x: None
+        width: self.parent.width / menubar_button_count
+        font_size: menubar_button_icon_size * self.height
+        on_press: app.root.current = 'screen_notes'
+    MenuBarButton:
+        markup: True
+        text: '[font=IconFont]add_notes[/font]'
+        size_hint_x: None
+        width: self.parent.width / menubar_button_count
+        font_size: menubar_button_icon_size * self.height
+        on_press: app.root.current = 'screen_record'
+    MenuBarButton:
+        markup: True
+        text: '[font=IconFont]settings[/font]'
+        size_hint_x: None
+        width: self.parent.width / menubar_button_count
+        font_size: menubar_button_icon_size * self.height
+        on_press: app.root.current = 'screen_settings'
+
+# Bottombar ------------------------------------------------------------------ #
+<BottomBarButton@Button>:
+    color: bottombar_text_color
+    background_normal: ''
+    background_color: bottombar_bg_color
+    font_size: bottombar_font_size
+    # width: self.parent.width
+
+<BottomBar@BoxLayout>:
+    size_hint: 1, None
+    height: bottombar_height
+    padding: '0sp'
+    spacing: '0sp'
+    orientation: 'horizontal'
+
+# Settings ------------------------------------------------------------------- #
+# https://github.com/kivy/kivy/blob/master/kivy/data/style.kv
+<SettingsWithNoMenu>:
+    canvas.before:
+        Color:
+            rgba: color_grey_darkest
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+<-SettingsPanel>:
+    spacing: 5
+    padding: 5
+    size_hint_y: None
+    height: self.minimum_height
+    Label:
+        size_hint_y: None
+        text: root.title.upper()
+        text_size: self.width - 32, None
+        height: self.texture_size[1] + 30
+        color: color_grey
+        font_size: '24sp'
+        canvas.after:
+            Color:
+                rgb: color_grey_dark
+            Rectangle:
+                pos: self.x, self.y - 2
+                size: self.width, 3
+
+<-SettingItem>:
+    size_hint: .25, None
+    height: labellayout.texture_size[1] + dp(20)
+    content: content
+    canvas:
+        Color:
+            rgb: color_grey_dark
+        Rectangle:
+            pos: self.x, self.y - 2
+            size: self.width, 3
+    BoxLayout:
+        pos: root.pos
+        Label:
+            size_hint_x: .66
+            id: labellayout
+            markup: True
+            text: u'{0}\n[size=24sp][color=999999]{1}[/color][/size]'.format(root.title or '', root.desc or '')
+            font_size: '36sp'
+            text_size: self.width - 32, None
+        BoxLayout:
+            id: content
+            size_hint_x: .33
+
+<SettingString>:
+    Label:
+        text: root.value or ''
+        pos: root.pos
+        font_size: '36sp'
+        color: color_accent_blue
+
+<SettingOptions>:
+    Label:
+        text: root.value or ''
+        pos: root.pos
+        font_size: '36sp'
+        color: color_accent_blue
+
+<Popup>:
+    background_color: color_grey_dark
+    separator_color: color_accent_blue
+    title_size: '24sp'
+    # auto_dismiss: False
+    # on_dismiss: root.dispatch('on_config_change')

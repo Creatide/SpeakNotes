@@ -1,0 +1,41 @@
+[
+    {
+        "type": "options",
+        "title": "Michrophone",
+        "desc": "Choose the michrophone",
+        "section": "Settings",
+        "key": "michrophone",
+        "options": [
+            "Microsoft Sound Mapper - Output",
+            "Remote Audio",
+            "Primary Sound Driver",
+            "Remote Audio",
+            "Remote Audio"
+        ]
+    },
+    {
+        "type": "numeric",
+        "title": "Energy Threshold",
+        "desc": "Values below threshold are considered silence",
+        "section": "Settings",
+        "key": "energy_threshold"
+    },
+    {
+        "type": "options",
+        "title": "Whisper AI Models",
+        "desc": "Choose the model size",
+        "section": "Settings",
+        "key": "model",
+        "options": [
+            "tiny.en",
+            "tiny",
+            "base.en",
+            "base",
+            "small.en",
+            "small",
+            "medium.en",
+            "medium",
+            "large-v2"
+        ]
+    }
+]
