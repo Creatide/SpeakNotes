@@ -19,7 +19,7 @@ from utils import Utilities
 import kivy
 
 from kivy.config import Config
-Config.set('graphics', 'multisamples', '0')
+# Config.set('graphics', 'multisamples', '0')
 Config.set("graphics", "width", "720")
 Config.set("graphics", "height", "1280")
 

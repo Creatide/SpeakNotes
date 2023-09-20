@@ -6,9 +6,22 @@ The primary purpose of this project was to test the [Kivy Python App Development
 
 Here is an example video demonstrating how the application works:
 
+[![SpeakNotes Demo Video](https://i.imgur.com/UVXAqOi.jpg)](https://www.youtube.com/watch?v=6wHmWoP4QPg)
+
 This project is purely experimental, and my intention was not to make it a finished product. However, perhaps someone can benefit from this version and continue its development further.
 
 ## Setup WSL: Ubuntu & Anaconda
+
+### Test Setup Versions
+
+* Windows 11 Pro
+* WSL2 1.2.5.0
+* Ubuntu 22.04
+* Python 3.10
+* Kivy 2.2.0
+* PyTorch 2.0.1
+
+### Install Commands
 
 * Here are notes on the commands I use to install the application in my test environment.
 
@@ -30,16 +43,16 @@ sudo apt-get install alsa-base alsa-utils
 # Install ffmpeg
 sudo apt update && sudo apt install ffmpeg
 
-# Install & update Anaconda
-wget https://repo.continuum.io/archive/Anaconda3-2022.10-Linux-x86_64.sh
-bash Anaconda3-2022.10-Linux-x86_64.sh
+# Install & update Anaconda (Miniconda)
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+bash Miniconda3-latest-Linux-x86_64.sh
+
+# Restart WSL
+exit
 
 # Update Anaconda (optional)
 conda update conda
 conda update anaconda
-
-# Restart WSL
-exit
 
 # Create conda environment and activate it
 conda create --name sn python=3.10 pip
@@ -71,6 +84,12 @@ echo 'export LD_LIBRARY_PATH=/usr/lib/wsl/lib:$LD_LIBRARY_PATH' >> ~/.bashrc
 
 # Fix error: libGL error: MESA-LOADER: failed to open swrast: /usr/lib/dri/swrast_dri.so
 conda install -c conda-forge libstdcxx-ng
+
+# Fix error: No such file or directory: xclip
+sudo apt-get install xclip xsel
+
+# Clone this repository to current directory and cd into it
+git clone https://github.com/Creatide/SpeakNotes.git && cd "$(basename "$_" .git)"
 
 # Start SpeakNotes app
 python main.py
